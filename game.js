@@ -4,7 +4,13 @@ let bet = 10;
 
 const symbols = ["🍒", "🔔", "💎", "⭐", "👑"];
 
-
+const payouts = {
+    "🍒": 2,
+    "🔔": 5,
+    "💎": 10,
+    "⭐": 20,
+    "👑": 80
+};
 function getRandomSymbol() {
 
     const randomIndex = Math.floor(
@@ -13,7 +19,6 @@ function getRandomSymbol() {
 
     return symbols[randomIndex];
 }
-
 
 function spin() {
 
@@ -36,22 +41,26 @@ function spin() {
     document.getElementById("reel3").textContent = symbol3;
 
     if (
-        symbol1 === symbol2 &&
-        symbol2 === symbol3
-    ) {
+    symbol1 === symbol2 &&
+    symbol2 === symbol3
+) {
 
-        const winnings = bet * 10;
+    const multiplier = payouts[symbol1];
 
-        balance = balance + winnings;
+    const winnings = bet * multiplier;
 
-        document.getElementById("message").textContent =
-            "WIN! +" + winnings + " coins";
+    balance = balance + winnings;
 
-    } else {
+    document.getElementById("message").textContent =
+        "WIN! " + symbol1 + symbol1 + symbol1 +
+        " pays " + multiplier + "x! +" +
+        winnings + " coins";
 
-        document.getElementById("message").textContent =
-            "No win.";
-    }
+} else {
+
+    document.getElementById("message").textContent =
+        "No win.";
+}
 
     document.getElementById("balance").textContent = balance;
 }
