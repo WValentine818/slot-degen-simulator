@@ -1,0 +1,61 @@
+let balance = 1000;
+let bet = 10;
+
+const symbols = ["🍒", "🔔", "💎", "⭐", "👑"];
+
+
+function getRandomSymbol() {
+
+    const randomIndex = Math.floor(
+        Math.random() * symbols.length
+    );
+
+    return symbols[randomIndex];
+}
+
+
+function spin() {
+
+    if (balance < bet) {
+
+        document.getElementById("message").textContent =
+            "Not enough coins.";
+
+        return;
+    }
+
+    balance = balance - bet;
+
+    const symbol1 = getRandomSymbol();
+    const symbol2 = getRandomSymbol();
+    const symbol3 = getRandomSymbol();
+
+    document.getElementById("reel1").textContent = symbol1;
+    document.getElementById("reel2").textContent = symbol2;
+    document.getElementById("reel3").textContent = symbol3;
+
+    if (
+        symbol1 === symbol2 &&
+        symbol2 === symbol3
+    ) {
+
+        const winnings = bet * 10;
+
+        balance = balance + winnings;
+
+        document.getElementById("message").textContent =
+            "WIN! +" + winnings + " coins";
+
+    } else {
+
+        document.getElementById("message").textContent =
+            "No win.";
+    }
+
+    document.getElementById("balance").textContent = balance;
+}
+
+
+document
+    .getElementById("spinButton")
+    .addEventListener("click", spin);
