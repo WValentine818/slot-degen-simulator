@@ -1,3 +1,4 @@
+// RNG Vault v0.1.0
 let balance = 1000;
 let bet = 10;
 
