@@ -1,6 +1,12 @@
-// RNG Vault v0.1.0
+// Slot Degen Simulator v0.2.0-dev
 let balance = 1000;
 let bet = 10;
+
+let totalSpins = 0;
+let totalWagered = 0;
+let totalWon = 0;
+let totalWins = 0;
+let biggestWin = 0;
 
 const symbols = ["🍒", "🔔", "💎", "⭐", "👑"];
 
@@ -32,6 +38,9 @@ function spin() {
 
     balance = balance - bet;
 
+    totalSpins = totalSpins + 1;
+    totalWagered = totalWagered + bet;
+
     const symbol1 = getRandomSymbol();
     const symbol2 = getRandomSymbol();
     const symbol3 = getRandomSymbol();
@@ -51,6 +60,13 @@ function spin() {
 
     balance = balance + winnings;
 
+    totalWon = totalWon + winnings;
+    totalWins = totalWins + 1;
+
+    if (winnings > biggestWin) {
+        biggestWin = winnings;
+    }
+
     document.getElementById("message").textContent =
         "WIN! " + symbol1 + symbol1 + symbol1 +
         " pays " + multiplier + "x! +" +
@@ -63,9 +79,60 @@ function spin() {
 }
 
     document.getElementById("balance").textContent = balance;
+
+    updateStats();
 }
 
+function resetCoins() {
 
-document
-    .getElementById("spinButton")
-    .addEventListener("click", spin);
+    balance = 1000;
+
+    document.getElementById("balance").textContent =
+        balance;
+
+    document.getElementById("message").textContent =
+        "Test coins restored to 1000.";
+}
+
+function updateStats() {
+
+    let hitRate = 0;
+    let observedRtp = 0;
+
+    if (totalSpins > 0) {
+        hitRate = (totalWins / totalSpins) * 100;
+    }
+
+    if (totalWagered > 0) {
+        observedRtp = (totalWon / totalWagered) * 100;
+    }
+
+    document.getElementById("totalSpins").textContent =
+        totalSpins;
+
+    document.getElementById("totalWagered").textContent =
+        totalWagered;
+
+    document.getElementById("totalWon").textContent =
+        totalWon;
+
+    document.getElementById("totalWins").textContent =
+        totalWins;
+
+    document.getElementById("hitRate").textContent =
+        hitRate.toFixed(2) + "%";
+
+    document.getElementById("observedRtp").textContent =
+        observedRtp.toFixed(2) + "%";
+
+    document.getElementById("biggestWin").textContent =
+        biggestWin;
+}
+
+    document
+        .getElementById("spinButton")
+        .addEventListener("click", spin);
+    
+    document
+        .getElementById("resetButton")
+        .addEventListener("click", resetCoins);
